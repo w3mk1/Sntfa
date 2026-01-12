@@ -1,61 +1,38 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="main-html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNTF Smart Tracker</title>
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>Music Streaming App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="player-card">
+        <div class="album-art-container">
+            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500" alt="Cover" id="cover-art">
+            
+            <svg class="progress-ring" width="320" height="320">
+                <circle class="progress-ring__circle" stroke="white" stroke-width="4" fill="transparent" r="145" cx="160" cy="110"/>
+            </svg>
 
-<header>
-    <div id="app-title">SNTF الذكي</div>
-    <div class="header-controls">
-        <button class="btn-mode" onclick="toggleDarkMode()" id="dark-btn">🌙</button>
-        <select id="langSelect" onchange="updateLanguage(this.value)">
-            <option value="ar">العربية</option>
-            <option value="fr">Français</option>
-            <option value="en">English</option>
-        </select>
-    </div>
-</header>
-
-<div class="main-content">
-    <div class="app-panel">
-        <div class="card planner-card">
-            <h4 id="txt-plan">📍 خطط رحلتك</h4>
-            <label id="lbl-from">من:</label>
-            <select id="start-station"></select>
-            <label id="lbl-to">إلى:</label>
-            <select id="end-station"></select>
-            <button class="btn btn-action" onclick="planTrip()" id="btn-show">🔍 عرض المسار</button>
-        </div>
-
-        <div class="card tool-card">
-            <h4 id="txt-tools">🛠️ أدوات الرحلة</h4>
-            <button class="btn btn-track" onclick="startTracking()" id="btn-track">🛰️ بدء التتبع</button>
-            <div class="alarm-section">
-                <label id="lbl-alarm">🔔 منبه الوصول:</label>
-                <select id="alarm-station"></select>
-            </div>
-            <div id="status-area" class="status-box" style="display:none;">
-                <span id="txt-now">الموقع الحالي:</span> <b id="current-loc">-</b>
+            <div class="album-info">
+                <h2 id="current-title">Perception</h2>
+                <p id="current-artist">NF</p>
             </div>
         </div>
 
-        <h4 id="txt-sched">📅 جدول الرحلة</h4>
-        <table class="timetable">
-            <tbody id="timetable-body"></tbody>
-        </table>
+        <div class="track-list" id="playlist">
+            </div>
+
+        <div class="controls">
+            <button id="prev" class="nav-btn">⏮</button>
+            <button id="play-pause" class="main-btn">▶</button>
+            <button id="next" class="nav-btn">⏭</button>
+        </div>
+        
+        <audio id="audio-player"></audio>
     </div>
 
-    <div id="map"></div>
-</div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
