@@ -2,37 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Streaming App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro Music Streamer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="player-card">
-        <div class="album-art-container">
-            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500" alt="Cover" id="cover-art">
+
+    <div class="mobile-frame">
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="album-section">
+            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500" id="album-art" alt="Cover Art">
             
-            <svg class="progress-ring" width="320" height="320">
-                <circle class="progress-ring__circle" stroke="white" stroke-width="4" fill="transparent" r="145" cx="160" cy="110"/>
+            <svg class="progress-ring" viewBox="0 0 100 100">
+                <circle class="ring-track" cx="50" cy="50" r="48" />
+                <circle class="ring-fill" id="progress-bar" cx="50" cy="50" r="48" />
             </svg>
 
-            <div class="album-info">
-                <h2 id="current-title">Perception</h2>
-                <p id="current-artist">NF</p>
+            <div class="song-details">
+                <h1 id="title">Perception</h1>
+                <p id="artist">NF</p>
             </div>
         </div>
 
-        <div class="track-list" id="playlist">
-            </div>
-
-        <div class="controls">
-            <button id="prev" class="nav-btn">⏮</button>
-            <button id="play-pause" class="main-btn">▶</button>
-            <button id="next" class="nav-btn">⏭</button>
+        <div class="playlist-container">
+            <div id="playlist"></div>
         </div>
-        
-        <audio id="audio-player"></audio>
+
+        <div class="player-controls">
+            <div class="extra-actions">
+                <i class="fas fa-random" id="shuffle"></i>
+                <i class="fas fa-redo" id="repeat"></i>
+            </div>
+            <div class="main-actions">
+                <i class="fas fa-step-backward" id="prev"></i>
+                <div class="play-wrapper" id="play-pause">
+                    <i class="fas fa-play" id="play-icon"></i>
+                </div>
+                <i class="fas fa-step-forward" id="next"></i>
+            </div>
+        </div>
     </div>
 
+    <audio id="main-audio"></audio>
     <script src="script.js"></script>
 </body>
 </html>
