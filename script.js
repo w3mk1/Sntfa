@@ -1,55 +1,70 @@
+const audio = document.getElementById('main-audio');
+const playBtn = document.getElementById('play-pause');
+const playIcon = document.getElementById('play-icon');
+const progressBar = document.getElementById('progress-bar');
+const playlistEl = document.getElementById('playlist');
+
 const songs = [
-    { title: "Intro III", artist: "NF", src: "path/to/song1.mp3", duration: "4:29" },
-    { title: "Outcast", artist: "NF", src: "path/to/song2.mp3", duration: "5:26" },
-    { title: "10 Feet Down", artist: "NF", src: "path/to/song3.mp3", duration: "3:37" }
+    { title: "Intro III", artist: "NF", src: "song1.mp3", img: "https://via.placeholder.com/400" },
+    { title: "Outcast", artist: "NF", src: "song2.mp3", img: "https://via.placeholder.com/401" },
+    { title: "10 Feet Down", artist: "NF", src: "song3.mp3", img: "https://via.placeholder.com/402" }
 ];
 
 let songIndex = 0;
-const audio = document.getElementById('audio-player');
-const circle = document.querySelector('.progress-ring__circle');
-const radius = circle.r.baseVal.value;
-const circumference = radius * 2 * Math.PI;
+const circumference = 2 * Math.PI * 48; // Matches SVG 'r' value
 
-circle.style.strokeDasharray = `${circumference} ${circumference}`;
-circle.style.strokeDashoffset = circumference;
-
-// Load song details
-function loadSong(song) {
-    document.getElementById('current-title').innerText = song.title;
-    document.getElementById('current-artist').innerText = song.artist;
+// Initialize app
+function loadSong(index) {
+    const song = songs[index];
+    document.getElementById('title').innerText = song.title;
+    document.getElementById('artist').innerText = song.artist;
+    document.getElementById('album-art').src = song.img;
     audio.src = song.src;
+    renderPlaylist();
 }
+
+function renderPlaylist() {
+    playlistEl.innerHTML = '';
+    songs.forEach((s, i) => {
+        const div = document.createElement('div');
+        div.className = `track-row ${i === songIndex ? 'active' : ''}`;
+        div.innerHTML = `<span>${s.title}</span> <i class="fas fa-play-circle"></i>`;
+        div.onclick = () => { songIndex = i; loadSong(i); playMusic(); };
+        playlistEl.appendChild(div);
+    });
+}
+
+function playMusic() {
+    audio.play();
+    playIcon.className = 'fas fa-pause';
+}
+
+function pauseMusic() {
+    audio.pause();
+    playIcon.className = 'fas fa-play';
+}
+
+playBtn.addEventListener('click', () => {
+    const isPlaying = playIcon.classList.contains('fa-pause');
+    isPlaying ? pauseMusic() : playMusic();
+});
 
 // Update Progress Circle
 audio.addEventListener('timeupdate', () => {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    const offset = circumference - (percent / 100 * circumference);
-    circle.style.strokeDashoffset = offset;
-});
-
-// Play/Pause Toggle
-document.getElementById('play-pause').addEventListener('click', (e) => {
-    if (audio.paused) {
-        audio.play();
-        e.target.innerText = '⏸';
-    } else {
-        audio.pause();
-        e.target.innerText = '▶';
+    const { duration, currentTime } = audio;
+    if (duration) {
+        const progressPercent = (currentTime / duration);
+        const offset = circumference - (progressPercent * circumference);
+        progressBar.style.strokeDashoffset = offset;
     }
 });
 
-// Render Playlist
-const playlist = document.getElementById('playlist');
-songs.forEach((song, index) => {
-    const div = document.createElement('div');
-    div.className = `track-item ${index === songIndex ? 'active' : ''}`;
-    div.innerHTML = `<span>${song.title}</span><span>${song.duration}</span>`;
-    div.onclick = () => {
-        songIndex = index;
-        loadSong(songs[songIndex]);
-        audio.play();
-    };
-    playlist.appendChild(div);
+// Auto Next
+audio.addEventListener('ended', () => {
+    songIndex = (songIndex + 1) % songs.length;
+    loadSong(songIndex);
+    playMusic();
 });
 
-loadSong(songs[songIndex]);
+// Start
+loadSong(songIndex);
